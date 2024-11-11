@@ -73,7 +73,7 @@ API 방식을 이용한 Database 기본 CRUD 프로그램
 3. 데이터베이스 설정을 구성합니다. `config.yaml` 파일을 생성하고 다음과 같은 내용을 추가합니다:
     ```yaml
     database:
-      dsn: "root:1234@tcp(localhost:3306)/baton?parseTime=true"
+      dsn: "계정이름:비밀번호@tcp(데이터베이스주소:포트)/데이터베이스이름?parseTime=true"
 
     ```
 
