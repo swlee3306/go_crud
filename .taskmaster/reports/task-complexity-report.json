@@ -1,0 +1,109 @@
+{
+	"meta": {
+		"generatedAt": "2025-09-30T04:25:40.844Z",
+		"tasksAnalyzed": 12,
+		"totalTasks": 12,
+		"analysisCount": 12,
+		"thresholdScore": 5,
+		"projectName": "Taskmaster",
+		"usedResearch": false
+	},
+	"complexityAnalysis": [
+		{
+			"taskId": 1,
+			"taskTitle": "Set up Go project with Gin and GORM",
+			"complexityScore": 4,
+			"recommendedSubtasks": 5,
+			"expansionPrompt": "Expand on the steps required to configure the database connection using environment variables, including specific environment variable names and how to handle different database types (MySQL, PostgreSQL).",
+			"reasoning": "While the steps are outlined, configuring the database connection and handling different database drivers adds complexity."
+		},
+		{
+			"taskId": 2,
+			"taskTitle": "Define Data Models with GORM",
+			"complexityScore": 5,
+			"recommendedSubtasks": 4,
+			"expansionPrompt": "Detail the process of defining relationships between data models (one-to-one, one-to-many, many-to-many) using GORM annotations, including examples for each type of relationship.",
+			"reasoning": "Defining complex relationships between models can be challenging and requires a deeper understanding of GORM."
+		},
+		{
+			"taskId": 3,
+			"taskTitle": "Implement Basic CRUD API Endpoints",
+			"complexityScore": 6,
+			"recommendedSubtasks": 6,
+			"expansionPrompt": "Elaborate on implementing proper error handling within the Gin handlers, including specific error types, HTTP status codes, and how to return informative error messages to the client.",
+			"reasoning": "Implementing robust error handling and adhering to RESTful principles requires careful consideration and adds complexity."
+		},
+		{
+			"taskId": 4,
+			"taskTitle": "Implement Data Validation",
+			"complexityScore": 7,
+			"recommendedSubtasks": 5,
+			"expansionPrompt": "Provide detailed examples of defining validation rules for different data types (strings, numbers, emails, etc.) using struct tags with the `validator.v10` package, including custom validation rules.",
+			"reasoning": "Data validation, especially preventing SQL injection and XSS, requires a good understanding of security best practices and can be complex."
+		},
+		{
+			"taskId": 5,
+			"taskTitle": "Implement JWT Authentication",
+			"complexityScore": 7,
+			"recommendedSubtasks": 6,
+			"expansionPrompt": "Detail the steps involved in generating and verifying JWT tokens, including choosing a signing algorithm, setting token expiration times, and handling token refresh.",
+			"reasoning": "JWT authentication involves cryptographic concepts and requires careful implementation to ensure security."
+		},
+		{
+			"taskId": 6,
+			"taskTitle": "Implement Role-Based Access Control (RBAC)",
+			"complexityScore": 8,
+			"recommendedSubtasks": 7,
+			"expansionPrompt": "Describe how to implement middleware to check the user's role and authorize access to specific endpoints, including examples of different RBAC strategies (e.g., ACL, ABAC).",
+			"reasoning": "RBAC can be complex, especially when dealing with fine-grained permissions and different roles."
+		},
+		{
+			"taskId": 7,
+			"taskTitle": "Implement Structured Logging",
+			"complexityScore": 5,
+			"recommendedSubtasks": 4,
+			"expansionPrompt": "Expand on configuring `zap` to log in JSON format, including how to customize the log output and integrate it with a logging service (e.g., ELK stack).",
+			"reasoning": "Setting up structured logging and integrating it with external services requires some configuration and understanding of logging best practices."
+		},
+		{
+			"taskId": 8,
+			"taskTitle": "Implement API Documentation with Swagger",
+			"complexityScore": 4,
+			"recommendedSubtasks": 4,
+			"expansionPrompt": "Provide examples of adding Swagger annotations to API endpoints, including how to document request parameters, response bodies, and error codes.",
+			"reasoning": "Generating Swagger documentation is relatively straightforward but requires adding annotations to the code."
+		},
+		{
+			"taskId": 9,
+			"taskTitle": "Implement Pagination, Filtering, and Sorting",
+			"complexityScore": 6,
+			"recommendedSubtasks": 5,
+			"expansionPrompt": "Detail how to use GORM to implement pagination, filtering, and sorting logic, including examples of different filtering and sorting options.",
+			"reasoning": "Implementing these features requires understanding how to use GORM's query builder and handle different query parameters."
+		},
+		{
+			"taskId": 10,
+			"taskTitle": "Implement Rate Limiting",
+			"complexityScore": 6,
+			"recommendedSubtasks": 5,
+			"expansionPrompt": "Elaborate on configuring the rate limiting middleware, including different rate limiting strategies (e.g., fixed window, sliding window) and how to customize the error response.",
+			"reasoning": "Configuring rate limiting effectively requires understanding different strategies and their trade-offs."
+		},
+		{
+			"taskId": 11,
+			"taskTitle": "Implement Health Check Endpoint",
+			"complexityScore": 3,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Detail the steps involved in checking the database connection and Redis connection (if used), including error handling and how to return appropriate status codes.",
+			"reasoning": "Implementing a basic health check endpoint is relatively simple."
+		},
+		{
+			"taskId": 12,
+			"taskTitle": "Containerize the Application with Docker",
+			"complexityScore": 5,
+			"recommendedSubtasks": 5,
+			"expansionPrompt": "Expand on creating a Dockerfile, including best practices for optimizing the image size and using multi-stage builds. Also, detail how to configure the application using environment variables within the Docker container.",
+			"reasoning": "Containerization involves understanding Docker concepts and best practices."
+		}
+	]
+}

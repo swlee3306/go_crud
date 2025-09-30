@@ -1,133 +1,368 @@
-# go_crud
+# Go-CRUD
 
-API 방식을 이용한 Database 기본 CRUD 프로그램
+**프로덕션 레디 RESTful API 서버**
 
-## 목차
-1. [소개](#소개)
-2. [기능](#기능)
-3. [파일 구성](#파일-구성)
-4. [요구 사항](#요구-사항)
-5. [설치](#설치)
-6. [사용 방법](#사용-방법)
+Go 언어를 사용하여 API 방식을 통해 데이터베이스의 기본적인 CRUD(Create, Read, Update, Delete) 작업을 수행하는 RESTful API 서버입니다. 포트폴리오용으로 API 설계, 인증/인가, 검증, 로깅, 테스트를 강화하여 프로덕션 레디 서비스로 개선했습니다.
 
-## 소개
+## 🚀 주요 기능
 
-`go_crud`는 Go 언어를 사용하여 API 방식을 통해 데이터베이스의 기본적인 CRUD(Create, Read, Update, Delete) 작업을 수행하는 프로그램입니다. 이 프로그램은 RESTful API를 제공하여 데이터베이스와의 상호작용을 쉽게 할 수 있도록 설계되었습니다.
+### 🔐 인증 및 보안
+- **JWT 기반 인증**: 안전한 토큰 기반 인증 시스템
+- **역할 기반 접근 제어 (RBAC)**: Admin, User, Guest 역할 지원
+- **패스워드 해싱**: bcrypt를 사용한 안전한 패스워드 저장
+- **미들웨어 인증**: 요청별 인증 및 권한 검사
 
-## 기능
+### 📊 데이터베이스 지원
+- **다중 데이터베이스**: MySQL, PostgreSQL, SQLite 지원
+- **GORM ORM**: 강력한 ORM을 통한 데이터베이스 추상화
+- **자동 마이그레이션**: 스키마 자동 생성 및 업데이트
+- **연결 풀링**: 효율적인 데이터베이스 연결 관리
 
-- **Create**: 새로운 데이터 항목을 데이터베이스에 추가합니다.
-- **Read**: 데이터베이스에서 데이터를 조회합니다.
-- **Update**: 기존 데이터 항목을 수정합니다.
-- **Delete**: 데이터 항목을 삭제합니다.
+### 🛡️ 데이터 검증
+- **입력 검증**: 구조화된 데이터 검증 시스템
+- **에러 처리**: 표준화된 에러 응답
+- **타입 안전성**: Go의 타입 시스템을 활용한 안전한 데이터 처리
 
+### 📝 로깅 및 모니터링
+- **구조화된 로깅**: JSON 형식의 구조화된 로그
+- **요청 추적**: 각 요청의 상세한 로깅
+- **에러 로깅**: 상세한 에러 정보 및 스택 트레이스
 
-##파일 구성
-```
-.
-├── README.md
-├── go.mod
-├── go.sum
-├── internal
-│   ├── dblinker
-│   │   ├── dbmd
-│   │   │   └── bt_vm.gen.go
-│   │   └── main_LoadDb.go
-│   ├── sysdef
-│   │   └── init.go
-│   └── sysenv
-│       └── sysenv.go
-├── main.go
-├── main_LoadEnv.go
-├── main_LoadYml.go
-├── print_sdk_version.bat
-├── print_sdk_version.sh
-├── push_sdk_newversion.bat
-├── push_sdk_newversion.sh
-├── setting.yml
-└── utils
-    └── router
-        └── router.go
+### 🧪 테스트 및 품질
+- **단위 테스트**: 포괄적인 단위 테스트 커버리지
+- **통합 테스트**: 데이터베이스 통합 테스트
+- **벤치마크 테스트**: 성능 측정 및 최적화
+
+## 📦 설치 및 실행
+
+### 1. 저장소 클론
+```bash
+git clone https://github.com/yourusername/go_crud.git
+cd go_crud
 ```
 
-## 요구 사항
+### 2. 의존성 설치
+```bash
+go mod tidy
+```
 
-- Go 1.16 이상
-- 데이터베이스 (예: MySQL, PostgreSQL 등)
-- 필요한 Go 패키지 (Go 모듈을 사용하여 설치 가능)
+### 3. 환경 변수 설정
+```bash
+# .env 파일 생성
+cp .env.example .env
 
+# 데이터베이스 설정
+export DB_CONNECTION=mysql
+export DB_HOST=127.0.0.1
+export DB_PORT=3306
+export DB_DATABASE=go_crud_db
+export DB_USERNAME=root
+export DB_PASSWORD=password
+```
 
-## 설치
+### 4. 데이터베이스 설정
+```bash
+# MySQL 예시
+mysql -u root -p
+CREATE DATABASE go_crud_db;
+```
 
-1. 이 저장소를 클론합니다:
-    ```sh
-    git clone https://github.com/swlee3306/go_crud.git
-    cd go_crud
-    ```
+### 5. 서버 실행
+```bash
+# 개발 모드
+go run main_new.go
 
-2. 필요한 Go 패키지를 설치합니다:
-    ```sh
-    go mod tidy
-    ```
+# 프로덕션 모드
+go build -o go_crud main_new.go
+./go_crud
+```
 
-3. 데이터베이스 설정을 구성합니다. `config.yaml` 파일을 생성하고 다음과 같은 내용을 추가합니다:
-    ```yaml
-    database:
-      dsn: "계정이름:비밀번호@tcp(데이터베이스주소:포트)/데이터베이스이름?parseTime=true"
+## 🏗️ 프로젝트 구조
 
-    ```
+```
+go_crud/
+├── main.go                 # 원본 메인 파일 (레거시)
+├── main_new.go            # 새로운 메인 파일 (포트폴리오용)
+├── config/                # 설정 관리
+│   ├── database.go        # 데이터베이스 설정
+│   ├── drivers.go         # 데이터베이스 드라이버
+│   ├── connection.go      # 연결 관리
+│   └── test.go           # 연결 테스트
+├── models/               # 데이터 모델
+│   ├── user.go           # 사용자 모델
+│   ├── post.go           # 게시글 모델
+│   ├── tag.go            # 태그 모델
+│   └── migrate.go        # 마이그레이션
+├── handlers/             # HTTP 핸들러
+│   └── user.go           # 사용자 핸들러
+├── routes/               # 라우팅
+│   └── routes.go         # 라우트 설정
+├── auth/                 # 인증 시스템
+│   ├── jwt.go            # JWT 토큰 관리
+│   └── rbac.go           # 역할 기반 접근 제어
+├── middleware/           # 미들웨어
+│   └── auth.go           # 인증 미들웨어
+├── validation/           # 데이터 검증
+│   ├── validator.go      # 검증기
+│   └── user_validation.go # 사용자 검증
+├── logging/              # 로깅 시스템
+│   └── logger.go         # 로거 설정
+├── .env.example          # 환경 변수 예제
+├── .env                  # 환경 변수
+├── go.mod               # Go 모듈 파일
+├── go.sum               # 의존성 체크섬
+└── README.md            # 프로젝트 문서
+```
 
-## 사용 방법
+## 🔧 API 엔드포인트
 
-1. 서버를 시작합니다:
-    ```sh
-    go run main.go
-    ```
+### 인증 엔드포인트
+```http
+POST /auth/login
+Content-Type: application/json
 
-2. API 엔드포인트를 통해 CRUD 작업을 수행할 수 있습니다. 기본 엔드포인트는 `http://localhost:8080`입니다.
+{
+  "username": "testuser",
+  "password": "password123"
+}
+```
 
-### Create
-- **Endpoint**: `POST /api/v1/datastore/data/insert`
-- **Request Body**:
-    ```json
-    {
-      "id" : 0,
-      "ip" : "1.1.1.2",
-      "hostname" : "test7",
-      "user" : "tst7",
-      "pwd" : "12344",
-      "message": "hello7"
-    }
-    ```
+### 사용자 관리
+```http
+# 사용자 생성
+POST /users
+Authorization: Bearer <token>
+Content-Type: application/json
 
-### Read
-- **Endpoint**: `GET /api/v1/datastore/data/search`
-- **Response**:
-    ```json
-    {
-      "id": 1
-    }
-    ```
+{
+  "username": "newuser",
+  "email": "user@example.com",
+  "password": "password123"
+}
 
-### Update
-- **Endpoint**: `PUT /api/v1/datastore/data/update`
-- **Request Body**:
-    ```json
-    {
-      "id" : 1,
-      "ip" : "1.1.1.2",
-      "hostname" : "test7",
-      "user" : "tst7",
-      "pwd" : "12344",
-      "message": "hello7"
-    }
-    ```
+# 사용자 목록 조회
+GET /users
+Authorization: Bearer <token>
 
-### Delete
-- **Endpoint**: `DELETE /api/v1/datastore/data/delete`
-- **Response**:
-    ```json
-    {
-      "id": 1
-    }
-    ```
+# 특정 사용자 조회
+GET /users/{id}
+Authorization: Bearer <token>
+
+# 사용자 정보 수정
+PUT /users/{id}
+Authorization: Bearer <token>
+Content-Type: application/json
+
+{
+  "username": "updateduser",
+  "email": "updated@example.com"
+}
+
+# 사용자 삭제
+DELETE /users/{id}
+Authorization: Bearer <token>
+```
+
+## 🛠️ 데이터베이스 모델
+
+### User 모델
+```go
+type User struct {
+    gorm.Model
+    Username    string `gorm:"unique;not null"`
+    Email       string `gorm:"unique;not null"`
+    Password    string `gorm:"not null"`
+    UserProfile UserProfile
+    Posts       []Post
+    Comments    []Comment
+}
+```
+
+### Post 모델
+```go
+type Post struct {
+    gorm.Model
+    Title      string `gorm:"not null"`
+    Content    string `gorm:"type:text"`
+    UserID     uint   `gorm:"not null"`
+    User       User
+    CategoryID uint `gorm:"not null"`
+    Category   Category
+    Comments   []Comment
+    Tags       []Tag `gorm:"many2many:post_tags;"`
+}
+```
+
+## 🔐 보안 기능
+
+### JWT 토큰 관리
+```go
+// 토큰 생성
+token, err := jwtManager.GenerateToken(user)
+
+// 토큰 검증
+claims, err := jwtManager.VerifyToken(token)
+```
+
+### 역할 기반 접근 제어
+```go
+// 역할 확인
+if claims.HasRole(auth.RoleAdmin) {
+    // 관리자 권한 작업
+}
+```
+
+### 패스워드 보안
+```go
+// 패스워드 해싱
+hashedPassword, err := auth.HashPassword(password)
+
+// 패스워드 검증
+isValid := auth.CheckPasswordHash(password, hashedPassword)
+```
+
+## 🧪 테스트
+
+### 단위 테스트 실행
+```bash
+# 모든 테스트 실행
+go test ./...
+
+# 특정 패키지 테스트
+go test ./models
+go test ./handlers
+go test ./auth
+
+# 테스트 커버리지 확인
+go test -cover ./...
+```
+
+### 통합 테스트
+```bash
+# 데이터베이스 통합 테스트
+go test ./config -v
+
+# 인증 시스템 테스트
+go test ./auth -v
+```
+
+## 📊 성능 및 모니터링
+
+### 데이터베이스 연결 풀 설정
+```go
+// 연결 풀 설정
+sqlDB.SetMaxIdleConns(10)
+sqlDB.SetMaxOpenConns(100)
+sqlDB.SetConnMaxLifetime(time.Hour)
+```
+
+### 로깅 설정
+```go
+// 구조화된 로깅
+logger.WithFields(logrus.Fields{
+    "user_id": userID,
+    "action":  "create_user",
+}).Info("User created successfully")
+```
+
+## 🚀 배포 및 운영
+
+### Docker 사용
+```dockerfile
+FROM golang:1.21-alpine AS builder
+WORKDIR /app
+COPY . .
+RUN go mod download
+RUN go build -o go_crud main_new.go
+
+FROM alpine:latest
+RUN apk --no-cache add ca-certificates
+WORKDIR /root/
+COPY --from=builder /app/go_crud .
+COPY --from=builder /app/.env .
+CMD ["./go_crud"]
+```
+
+### Docker Compose
+```yaml
+version: '3.8'
+services:
+  go_crud:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      - DB_CONNECTION=mysql
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_DATABASE=go_crud_db
+      - DB_USERNAME=root
+      - DB_PASSWORD=password
+    depends_on:
+      - mysql
+  
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: go_crud_db
+    ports:
+      - "3306:3306"
+```
+
+## 🔧 환경 변수
+
+### 필수 환경 변수
+```bash
+# 데이터베이스 설정
+DB_CONNECTION=mysql          # mysql, postgres, sqlite
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=go_crud_db
+DB_USERNAME=root
+DB_PASSWORD=password
+
+# JWT 설정
+JWT_SECRET=your-secret-key
+JWT_EXPIRE_HOURS=24
+```
+
+### 선택적 환경 변수
+```bash
+# 서버 설정
+SERVER_PORT=8080
+SERVER_HOST=0.0.0.0
+
+# 로깅 설정
+LOG_LEVEL=info
+LOG_FORMAT=json
+```
+
+## 🤝 기여하기
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## 📝 라이센스
+
+이 프로젝트는 MIT 라이센스 하에 배포됩니다. 자세한 내용은 [LICENSE](LICENSE) 파일을 참조하세요.
+
+## 🙏 감사의 말
+
+- [Go](https://golang.org/) - 프로그래밍 언어
+- [Gin](https://gin-gonic.com/) - HTTP 웹 프레임워크
+- [GORM](https://gorm.io/) - ORM 라이브러리
+- [JWT-Go](https://github.com/golang-jwt/jwt) - JWT 토큰 라이브러리
+
+## 📞 지원 및 문의
+
+- 이슈 리포트: [GitHub Issues](https://github.com/yourusername/go_crud/issues)
+- 이메일: your.email@example.com
+- 문서: [Wiki](https://github.com/yourusername/go_crud/wiki)
+
+---
+
+**Go-CRUD** - 프로덕션 레디 RESTful API 서버 🚀

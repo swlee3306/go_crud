@@ -1,0 +1,866 @@
+{
+  "master": {
+    "tasks": [
+      {
+        "id": "1",
+        "title": "Set up Go project with Gin and GORM",
+        "description": "Initialize a new Go project, integrate the Gin web framework for handling HTTP requests, and set up GORM for database interactions. Configure the project to use Go 1.21+.",
+        "details": "1. Create a new Go module: `go mod init go-crud`. 2. Install Gin: `go get -u github.com/gin-gonic/gin`. 3. Install GORM: `go get -u gorm.io/gorm` and `go get -u gorm.io/driver/mysql` or `go get -u gorm.io/driver/postgres`. 4. Create a `main.go` file to initialize Gin and GORM. 5. Configure database connection using environment variables.",
+        "testStrategy": "Verify that the Gin server starts without errors and GORM can connect to the database. Create a simple endpoint that returns a 200 OK status.",
+        "priority": "high",
+        "dependencies": [],
+        "status": "done",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Define Database Connection Environment Variables",
+            "description": "Specify the environment variables required for database connection, including database host, port, username, password, and database name. Account for different database types (MySQL, PostgreSQL) with distinct variable names or a database type variable.",
+            "dependencies": [],
+            "details": "Define variables such as `DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASSWORD`, `DB_NAME`, and optionally `DB_TYPE` (mysql/postgres).",
+            "status": "done",
+            "testStrategy": "",
+            "parentId": "undefined",
+            "updatedAt": "2025-09-30T04:32:41.275Z"
+          },
+          {
+            "id": 2,
+            "title": "Implement Database Connection Logic",
+            "description": "Write Go code to read the database connection parameters from the environment variables defined in the previous step.",
+            "dependencies": [
+              "1.1"
+            ],
+            "details": "Use `os.Getenv` to retrieve the values of the environment variables.",
+            "status": "done",
+            "testStrategy": "",
+            "parentId": "undefined",
+            "updatedAt": "2025-09-30T04:32:59.044Z"
+          },
+          {
+            "id": 3,
+            "title": "Handle Different Database Drivers",
+            "description": "Implement conditional logic to use the appropriate GORM driver based on the database type specified in the environment variables (MySQL or PostgreSQL).",
+            "dependencies": [
+              "1.2"
+            ],
+            "details": "Use an `if` statement or a `switch` statement to select the correct GORM driver based on the value of the `DB_TYPE` environment variable.",
+            "status": "done",
+            "testStrategy": "",
+            "parentId": "undefined",
+            "updatedAt": "2025-09-30T04:33:17.226Z"
+          },
+          {
+            "id": 4,
+            "title": "Establish Database Connection with GORM",
+            "description": "Use the retrieved connection parameters and the selected GORM driver to establish a connection to the database.",
+            "dependencies": [
+              "1.3"
+            ],
+            "details": "Call `gorm.Open` with the appropriate driver and connection string.",
+            "status": "done",
+            "testStrategy": "",
+            "parentId": "undefined",
+            "updatedAt": "2025-09-30T04:33:34.668Z"
+          },
+          {
+            "id": 5,
+            "title": "Test Database Connection",
+            "description": "Verify that the database connection is established successfully by performing a simple database operation, such as querying a table or creating a new record.",
+            "dependencies": [
+              "1.4"
+            ],
+            "details": "Use GORM to execute a simple SQL query or create a new record in a test table.",
+            "status": "done",
+            "testStrategy": "",
+            "parentId": "undefined",
+            "updatedAt": "2025-09-30T04:33:59.378Z"
+          }
+        ],
+        "updatedAt": "2025-09-30T04:33:59.378Z"
+      },
+      {
+        "id": "2",
+        "title": "Define Data Models with GORM",
+        "description": "Define the data models (entities) for the application using GORM. Ensure the models reflect a normalized schema and include appropriate data types and constraints.",
+        "details": "1. Create Go structs representing the database tables. 2. Use GORM annotations to define column names, data types, primary keys, and foreign key relationships. 3. Implement `TableName()` method for each model to specify the table name. Example: `type User struct { ID uint \t`gorm:\"primaryKey\"`; Name string; Email string }`.",
+        "testStrategy": "Use GORM's `AutoMigrate` function to automatically create the tables in the database based on the defined models. Verify that the tables are created with the correct schema.",
+        "priority": "high",
+        "dependencies": [
+          "1"
+        ],
+        "status": "done",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Define One-to-One Relationships",
+            "description": "Define one-to-one relationships between data models using GORM annotations. Provide examples, such as a User having one Profile.",
+            "dependencies": [],
+            "details": "1. Use the `has one` association in GORM. 2. Ensure the foreign key is correctly defined on one of the tables. 3. Provide code examples demonstrating the implementation.",
+            "status": "done",
+            "testStrategy": "",
+            "parentId": "undefined",
+            "updatedAt": "2025-09-30T04:35:33.483Z"
+          },
+          {
+            "id": 2,
+            "title": "Define One-to-Many Relationships",
+            "description": "Define one-to-many relationships between data models using GORM annotations. Provide examples, such as a User having multiple Posts.",
+            "dependencies": [],
+            "details": "1. Use the `has many` association in GORM. 2. Ensure the foreign key is correctly defined on the 'many' side of the relationship. 3. Provide code examples demonstrating the implementation.",
+            "status": "done",
+            "testStrategy": "",
+            "parentId": "undefined",
+            "updatedAt": "2025-09-30T04:35:51.044Z"
+          },
+          {
+            "id": 3,
+            "title": "Define Many-to-Many Relationships",
+            "description": "Define many-to-many relationships between data models using GORM annotations. Provide examples, such as Users and Roles.",
+            "dependencies": [],
+            "details": "1. Use the `many2many` association in GORM. 2. Define a join table to manage the relationship. 3. Provide code examples demonstrating the implementation.",
+            "status": "done",
+            "testStrategy": "",
+            "parentId": "undefined",
+            "updatedAt": "2025-09-30T04:36:04.867Z"
+          },
+          {
+            "id": 4,
+            "title": "Test Relationship Definitions with AutoMigrate",
+            "description": "Use GORM's `AutoMigrate` function to automatically create the tables with the defined relationships in the database. Verify that the relationships are correctly established.",
+            "dependencies": [
+              "2.1",
+              "2.2",
+              "2.3"
+            ],
+            "details": "1. Call `AutoMigrate` with all defined models. 2. Inspect the database schema to verify foreign key constraints and table structures. 3. Write unit tests to verify data retrieval across relationships.",
+            "status": "done",
+            "testStrategy": "",
+            "parentId": "undefined",
+            "updatedAt": "2025-09-30T04:36:18.829Z"
+          }
+        ],
+        "updatedAt": "2025-09-30T04:36:18.829Z"
+      },
+      {
+        "id": "3",
+        "title": "Implement Basic CRUD API Endpoints",
+        "description": "Implement the basic CRUD (Create, Read, Update, Delete) API endpoints for the defined data models using Gin. Adhere to RESTful design principles.",
+        "details": "1. Create Gin handlers for each CRUD operation (e.g., `CreateUser`, `GetUser`, `UpdateUser`, `DeleteUser`). 2. Use GORM to interact with the database within the handlers. 3. Implement proper error handling and return appropriate HTTP status codes. 4. Use `gin.Context` to bind request data and return responses in JSON format.",
+        "testStrategy": "Use Postman or a similar tool to send requests to the CRUD endpoints and verify that the data is correctly created, read, updated, and deleted in the database. Check the HTTP status codes and response bodies.",
+        "priority": "high",
+        "dependencies": [
+          "2"
+        ],
+        "status": "done",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Define Custom Error Types",
+            "description": "Define custom error types to represent specific error scenarios within the CRUD operations (e.g., `ErrNotFound`, `ErrInvalidInput`, `ErrUnauthorized`).",
+            "dependencies": [],
+            "details": "Create a dedicated `errors` package or file to define these custom error types. Each error type should have a clear and descriptive name.",
+            "status": "pending",
+            "testStrategy": "",
+            "parentId": "undefined"
+          },
+          {
+            "id": 2,
+            "title": "Implement Error Handling in Handlers",
+            "description": "Implement error handling within each Gin handler to catch potential errors from GORM operations and other sources.",
+            "dependencies": [],
+            "details": "Use `if err != nil` checks after each GORM operation and other potentially failing functions. Log the error using structured logging.",
+            "status": "pending",
+            "testStrategy": "",
+            "parentId": "undefined"
+          },
+          {
+            "id": 3,
+            "title": "Map Errors to HTTP Status Codes",
+            "description": "Map the custom error types to appropriate HTTP status codes (e.g., `ErrNotFound` -> `404 Not Found`, `ErrInvalidInput` -> `400 Bad Request`).",
+            "dependencies": [
+              "3.1",
+              "3.2"
+            ],
+            "details": "Create a function or a switch statement to map the error types to HTTP status codes. Consider using a map for efficient lookup.",
+            "status": "pending",
+            "testStrategy": "",
+            "parentId": "undefined"
+          },
+          {
+            "id": 4,
+            "title": "Return Error Responses in JSON Format",
+            "description": "Return error responses in JSON format, including an error code and a human-readable error message.",
+            "dependencies": [
+              "3.3"
+            ],
+            "details": "Create a standard error response structure (e.g., `{ \"code\": \"ErrNotFound\", \"message\": \"User not found\" }`). Use `gin.Context.JSON` to return the error response with the appropriate HTTP status code.",
+            "status": "pending",
+            "testStrategy": "",
+            "parentId": "undefined"
+          },
+          {
+            "id": 5,
+            "title": "Implement RESTful Response Structure",
+            "description": "Ensure that all API endpoints adhere to RESTful design principles by returning consistent and meaningful responses, including appropriate HTTP status codes and response bodies.",
+            "dependencies": [],
+            "details": "Use HTTP status codes to indicate the success or failure of the request (e.g., `200 OK`, `201 Created`, `204 No Content`, `400 Bad Request`, `404 Not Found`, `500 Internal Server Error`). Return data in JSON format.",
+            "status": "pending",
+            "testStrategy": "",
+            "parentId": "undefined"
+          },
+          {
+            "id": 6,
+            "title": "Test Error Handling and RESTful Responses",
+            "description": "Test the error handling and RESTful responses of each CRUD endpoint by sending invalid requests and verifying that the correct HTTP status codes and error messages are returned.",
+            "dependencies": [
+              "3.4",
+              "3.5"
+            ],
+            "details": "Use Postman or a similar tool to send requests with invalid data, missing parameters, or incorrect authentication credentials. Verify that the API returns the expected error responses.",
+            "status": "pending",
+            "testStrategy": "",
+            "parentId": "undefined"
+          }
+        ],
+        "updatedAt": "2025-09-30T04:36:50.528Z"
+      },
+      {
+        "id": "4",
+        "title": "Implement Data Validation",
+        "description": "Implement data validation for all API endpoints to ensure that the request data is valid and conforms to the expected format. Prevent SQL injection and XSS attacks.",
+        "details": "1. Use the `validator.v10` package for data validation. 2. Define validation rules for each field in the data models using struct tags. 3. Implement middleware to validate the request data before it reaches the handlers. 4. Sanitize input data to prevent XSS attacks. 5. Use prepared statements with GORM to prevent SQL injection.",
+        "testStrategy": "Send invalid data to the API endpoints and verify that the validation middleware correctly rejects the requests with appropriate error messages. Test for SQL injection and XSS vulnerabilities.",
+        "priority": "high",
+        "dependencies": [
+          "3"
+        ],
+        "status": "done",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Define Validation Rules for Data Models",
+            "description": "Define validation rules for each field in the data models using struct tags with the `validator.v10` package. Include examples for strings (e.g., required, min/max length, regex), numbers (e.g., required, min/max value), and emails (e.g., valid email format).",
+            "dependencies": [],
+            "details": "Specify validation rules using struct tags such as `binding:\"required\"`, `binding:\"email\"`, `binding:\"min=6,max=32\"`, `binding:\"number\"`, and `binding:\"len=10\"`.  Document each rule with a clear explanation of its purpose.",
+            "status": "pending",
+            "testStrategy": "",
+            "parentId": "undefined"
+          },
+          {
+            "id": 2,
+            "title": "Implement Custom Validation Rules",
+            "description": "Implement custom validation rules using the `validator.v10` package for specific data types or business logic requirements. Provide examples of custom validation functions and how to register them with the validator.",
+            "dependencies": [],
+            "details": "Create custom validation functions that implement the `validator.Func` interface. Register these functions with the validator instance using `validator.RegisterValidation`.  Include error handling and informative error messages.",
+            "status": "pending",
+            "testStrategy": "",
+            "parentId": "undefined"
+          },
+          {
+            "id": 3,
+            "title": "Implement Validation Middleware",
+            "description": "Implement middleware to validate the request data before it reaches the handlers. This middleware should use the defined validation rules and return appropriate error messages if the data is invalid.",
+            "dependencies": [
+              "4.1",
+              "4.2"
+            ],
+            "details": "Create a Gin middleware function that retrieves the request data, validates it using the `validator.v10` package, and returns a `400 Bad Request` error with a detailed error message if the validation fails. Ensure the middleware is applied to all relevant API endpoints.",
+            "status": "pending",
+            "testStrategy": "",
+            "parentId": "undefined"
+          },
+          {
+            "id": 4,
+            "title": "Implement Input Sanitization for XSS Prevention",
+            "description": "Sanitize input data to prevent XSS attacks. Use a library like `github.com/microcosm-cc/bluemonday` to sanitize HTML input.",
+            "dependencies": [],
+            "details": "Integrate `bluemonday` into the validation middleware to sanitize HTML input fields. Configure `bluemonday` with a strict policy to remove potentially malicious HTML tags and attributes. Apply sanitization before validation.",
+            "status": "pending",
+            "testStrategy": "",
+            "parentId": "undefined"
+          },
+          {
+            "id": 5,
+            "title": "Implement Prepared Statements with GORM for SQL Injection Prevention",
+            "description": "Use prepared statements with GORM to prevent SQL injection vulnerabilities. Ensure that all database queries are parameterized and that user input is properly escaped.",
+            "dependencies": [],
+            "details": "Use GORM's built-in support for prepared statements by using the `db.Exec` and `db.Raw` methods with parameterized queries. Avoid using string concatenation to build SQL queries. Review all database interactions to ensure proper parameterization.",
+            "status": "pending",
+            "testStrategy": "",
+            "parentId": "undefined"
+          }
+        ],
+        "updatedAt": "2025-09-30T04:46:01.536Z"
+      },
+      {
+        "id": "5",
+        "title": "Implement JWT Authentication",
+        "description": "Implement JWT (JSON Web Token) authentication to secure the API endpoints. Generate and verify JWT tokens for user authentication.",
+        "details": "1. Install the `github.com/golang-jwt/jwt/v5` package. 2. Create a `User` model with `Username` and `Password` fields. 3. Implement a `/login` endpoint that authenticates users and generates a JWT token. 4. Implement middleware to verify the JWT token in the `Authorization` header for protected endpoints. 5. Store the JWT secret key in an environment variable.",
+        "testStrategy": "Create a user account and log in to obtain a JWT token. Use the token to access protected endpoints and verify that the authentication is successful. Try to access protected endpoints without a valid token and verify that the request is rejected.",
+        "priority": "high",
+        "dependencies": [
+          "4"
+        ],
+        "status": "done",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Choose JWT Signing Algorithm",
+            "description": "Select a suitable signing algorithm for JWT tokens (e.g., HMAC SHA256, RSA). Research the security implications of each algorithm and choose the most appropriate one for the application.",
+            "dependencies": [],
+            "details": "Consider factors like performance, security, and key management when choosing the algorithm. Document the chosen algorithm and the rationale behind the decision.",
+            "status": "pending",
+            "testStrategy": "",
+            "parentId": "undefined"
+          },
+          {
+            "id": 2,
+            "title": "Implement JWT Token Generation",
+            "description": "Implement the logic to generate JWT tokens upon successful user authentication. Include relevant user claims (e.g., user ID, username, roles) in the token payload.",
+            "dependencies": [],
+            "details": "Use the chosen signing algorithm to sign the token. Ensure that the token generation process is secure and efficient.",
+            "status": "pending",
+            "testStrategy": "",
+            "parentId": "undefined"
+          },
+          {
+            "id": 3,
+            "title": "Set JWT Token Expiration Time",
+            "description": "Configure an appropriate expiration time for JWT tokens. Balance security and user experience by setting a reasonable expiration time.",
+            "dependencies": [],
+            "details": "Consider factors like session duration, security risks, and user convenience when setting the expiration time. Implement a mechanism to refresh tokens if needed.",
+            "status": "pending",
+            "testStrategy": "",
+            "parentId": "undefined"
+          },
+          {
+            "id": 4,
+            "title": "Implement JWT Token Verification",
+            "description": "Implement the logic to verify JWT tokens received in the `Authorization` header. Verify the token signature, expiration time, and other relevant claims.",
+            "dependencies": [],
+            "details": "Use the same signing algorithm used for token generation to verify the token signature. Handle expired or invalid tokens gracefully.",
+            "status": "pending",
+            "testStrategy": "",
+            "parentId": "undefined"
+          },
+          {
+            "id": 5,
+            "title": "Implement Token Refresh Mechanism (Optional)",
+            "description": "Implement a mechanism to refresh JWT tokens before they expire, allowing users to maintain their sessions without re-authenticating.",
+            "dependencies": [
+              "5.3"
+            ],
+            "details": "Consider using refresh tokens or sliding sessions to implement token refresh. Ensure that the refresh mechanism is secure and prevents abuse.",
+            "status": "pending",
+            "testStrategy": "",
+            "parentId": "undefined"
+          },
+          {
+            "id": 6,
+            "title": "Handle Token Revocation (Optional)",
+            "description": "Implement a mechanism to revoke JWT tokens, invalidating them before their expiration time. This is useful for scenarios like user logout or account compromise.",
+            "dependencies": [],
+            "details": "Consider using a blacklist or a distributed cache to store revoked tokens. Ensure that the revocation mechanism is efficient and scalable.",
+            "status": "pending",
+            "testStrategy": "",
+            "parentId": "undefined"
+          }
+        ],
+        "updatedAt": "2025-09-30T04:46:30.095Z"
+      },
+      {
+        "id": "6",
+        "title": "Implement Role-Based Access Control (RBAC)",
+        "description": "Implement Role-Based Access Control (RBAC) to control access to different API endpoints based on user roles.",
+        "details": "1. Add a `Role` field to the `User` model. 2. Define different roles (e.g., `admin`, `user`, `guest`). 3. Implement middleware to check the user's role and authorize access to specific endpoints. 4. Use a configuration file or database table to store the role-based access control rules.",
+        "testStrategy": "Create users with different roles and verify that they can only access the endpoints that are authorized for their roles. Try to access unauthorized endpoints and verify that the request is rejected.",
+        "priority": "medium",
+        "dependencies": [
+          "5"
+        ],
+        "status": "done",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Define Roles and Permissions",
+            "description": "Define the different roles (e.g., admin, user, guest) and their corresponding permissions for accessing API endpoints. Document these roles and permissions.",
+            "dependencies": [],
+            "details": "Create a clear mapping of roles to allowed API endpoints and operations (e.g., read, write, delete). Consider using a matrix or table to represent this mapping.",
+            "status": "pending",
+            "testStrategy": "",
+            "parentId": "undefined"
+          },
+          {
+            "id": 2,
+            "title": "Implement Role Field in User Model",
+            "description": "Add a `Role` field (e.g., string or enum) to the `User` model to store the user's role.",
+            "dependencies": [],
+            "details": "Ensure the `Role` field is properly persisted in the database and can be updated as needed. Consider using an enum for type safety.",
+            "status": "pending",
+            "testStrategy": "",
+            "parentId": "undefined"
+          },
+          {
+            "id": 3,
+            "title": "Implement RBAC Middleware",
+            "description": "Develop middleware that intercepts API requests and checks if the user's role has the necessary permissions to access the requested endpoint.",
+            "dependencies": [
+              "6.1",
+              "6.2"
+            ],
+            "details": "The middleware should extract the user's role from the JWT token or session, retrieve the required permissions for the endpoint, and compare them. Implement error handling for unauthorized access (e.g., return a 403 Forbidden error).",
+            "status": "pending",
+            "testStrategy": "",
+            "parentId": "undefined"
+          },
+          {
+            "id": 4,
+            "title": "Choose and Implement RBAC Strategy",
+            "description": "Select an RBAC strategy (e.g., ACL, ABAC) and implement it within the middleware. ACL (Access Control Lists) are simpler, while ABAC (Attribute-Based Access Control) offers more flexibility.",
+            "dependencies": [
+              "6.3"
+            ],
+            "details": "For ACL, maintain a list of roles allowed for each endpoint. For ABAC, evaluate attributes of the user, resource, and environment to make access decisions. Implement the chosen strategy within the RBAC middleware.",
+            "status": "pending",
+            "testStrategy": "",
+            "parentId": "undefined"
+          },
+          {
+            "id": 5,
+            "title": "Configure RBAC Rules",
+            "description": "Store the RBAC rules (role-permission mappings) in a configuration file or database table. This allows for easy modification of access control policies without code changes.",
+            "dependencies": [
+              "6.1"
+            ],
+            "details": "Choose a suitable format for storing the rules (e.g., JSON, YAML, database table). Ensure the middleware can efficiently retrieve and interpret these rules.",
+            "status": "pending",
+            "testStrategy": "",
+            "parentId": "undefined"
+          },
+          {
+            "id": 6,
+            "title": "Apply Middleware to Endpoints",
+            "description": "Apply the RBAC middleware to the API endpoints that require access control. This can be done globally or selectively for specific routes.",
+            "dependencies": [
+              "6.3",
+              "6.4"
+            ],
+            "details": "Use the framework's middleware registration mechanism to apply the RBAC middleware to the desired endpoints. Ensure the middleware is applied in the correct order (e.g., after authentication).",
+            "status": "pending",
+            "testStrategy": "",
+            "parentId": "undefined"
+          },
+          {
+            "id": 7,
+            "title": "Test RBAC Implementation",
+            "description": "Thoroughly test the RBAC implementation by creating users with different roles and verifying that they can only access the endpoints that are authorized for their roles. Attempt to access unauthorized endpoints and verify that the requests are rejected.",
+            "dependencies": [
+              "6.1",
+              "6.2",
+              "6.3",
+              "6.4",
+              "6.5",
+              "6.6"
+            ],
+            "details": "Create test cases for each role and endpoint combination. Verify that the correct error messages are returned for unauthorized access attempts. Include edge cases and boundary conditions in the testing.",
+            "status": "pending",
+            "testStrategy": "",
+            "parentId": "undefined"
+          }
+        ],
+        "updatedAt": "2025-09-30T04:46:58.892Z"
+      },
+      {
+        "id": "7",
+        "title": "Implement Structured Logging",
+        "description": "Implement structured logging using a library like `zap` to log application events in JSON format. Include request/response logging and error tracking.",
+        "details": "1. Install the `go.uber.org/zap` package. 2. Configure `zap` to log in JSON format. 3. Implement middleware to log all incoming requests and outgoing responses, including headers, body, and status code. 4. Use `zap.Error` to log errors and track them.",
+        "testStrategy": "Send requests to the API endpoints and verify that the logs are generated in JSON format and contain the expected information. Trigger errors and verify that they are logged correctly.",
+        "priority": "medium",
+        "dependencies": [
+          "3"
+        ],
+        "status": "done",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Configure Zap for JSON Output",
+            "description": "Configure the `zap` logger to output logs in JSON format. This includes setting the encoder to `zapcore.NewJSONEncoder` with appropriate encoder configurations.",
+            "dependencies": [],
+            "details": "1. Create a `zapcore.EncoderConfig` with settings for time format, level key, message key, etc. 2. Use `zapcore.NewJSONEncoder` with the created encoder config. 3. Configure the `zap` logger with the JSON encoder.",
+            "status": "pending",
+            "testStrategy": "",
+            "parentId": "undefined"
+          },
+          {
+            "id": 2,
+            "title": "Customize Log Output",
+            "description": "Customize the JSON log output to include specific fields and formats required by the application and logging service. This may involve adding custom fields or modifying the default field names.",
+            "dependencies": [
+              "7.1"
+            ],
+            "details": "1. Define custom fields to include in the log output (e.g., request ID, user ID). 2. Modify the encoder configuration to include these custom fields. 3. Implement custom `zapcore.Field` types if necessary for complex data structures.",
+            "status": "pending",
+            "testStrategy": "",
+            "parentId": "undefined"
+          },
+          {
+            "id": 3,
+            "title": "Integrate with Logging Service (e.g., ELK)",
+            "description": "Configure `zap` to output logs in a format compatible with the chosen logging service (e.g., ELK stack). This may involve adjusting the JSON structure or using a specific log format.",
+            "dependencies": [
+              "7.2"
+            ],
+            "details": "1. Determine the required log format for the logging service. 2. Configure `zap` to output logs in the required format. 3. Test the integration by sending logs to the logging service and verifying that they are correctly parsed and indexed.",
+            "status": "pending",
+            "testStrategy": "",
+            "parentId": "undefined"
+          },
+          {
+            "id": 4,
+            "title": "Implement Log Rotation",
+            "description": "Implement log rotation to prevent log files from growing too large. Configure `zap` to rotate log files based on size or time.",
+            "dependencies": [
+              "7.1"
+            ],
+            "details": "1. Use a library like `lumberjack` to handle log rotation. 2. Configure `lumberjack` with settings for maximum log file size, maximum number of log files, and log file compression. 3. Integrate `lumberjack` with `zap` to rotate log files.",
+            "status": "pending",
+            "testStrategy": "",
+            "parentId": "undefined"
+          }
+        ],
+        "updatedAt": "2025-09-30T04:47:22.667Z"
+      },
+      {
+        "id": "8",
+        "title": "Implement API Documentation with Swagger",
+        "description": "Generate API documentation using Swagger/OpenAPI. Automatically generate the Swagger specification based on the code.",
+        "details": "1. Install the `github.com/swaggo/swag` and `github.com/swaggo/gin-swagger` packages. 2. Add Swagger annotations to the API endpoints. 3. Use `swag init` to generate the Swagger specification file. 4. Serve the Swagger UI using `gin-swagger`.",
+        "testStrategy": "Access the Swagger UI and verify that the API documentation is correctly generated and reflects the API endpoints and data models. Try out the API endpoints using the Swagger UI.",
+        "priority": "medium",
+        "dependencies": [
+          "3"
+        ],
+        "status": "done",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Install Swagger Packages",
+            "description": "Install github.com/swaggo/swag and github.com/swaggo/gin-swagger packages",
+            "details": "",
+            "status": "pending",
+            "dependencies": [],
+            "parentTaskId": 8,
+            "parentId": "undefined"
+          },
+          {
+            "id": 2,
+            "title": "Add Swagger Annotations",
+            "description": "Add Swagger annotations to API endpoints",
+            "details": "",
+            "status": "pending",
+            "dependencies": [],
+            "parentTaskId": 8,
+            "parentId": "undefined"
+          },
+          {
+            "id": 3,
+            "title": "Generate Swagger Documentation",
+            "description": "Generate Swagger documentation using swag command",
+            "details": "",
+            "status": "pending",
+            "dependencies": [],
+            "parentTaskId": 8,
+            "parentId": "undefined"
+          },
+          {
+            "id": 4,
+            "title": "Configure Swagger UI",
+            "description": "Configure Swagger UI endpoint and middleware",
+            "details": "",
+            "status": "pending",
+            "dependencies": [],
+            "parentTaskId": 8,
+            "parentId": "undefined"
+          }
+        ],
+        "updatedAt": "2025-09-30T04:47:49.189Z"
+      },
+      {
+        "id": "9",
+        "title": "Implement Pagination, Filtering, and Sorting",
+        "description": "Implement pagination, filtering, and sorting for the API endpoints that return lists of data.",
+        "details": "1. Add query parameters for pagination (e.g., `page`, `limit`). 2. Add query parameters for filtering (e.g., `name`, `email`). 3. Add query parameters for sorting (e.g., `sort`, `order`). 4. Use GORM to implement the pagination, filtering, and sorting logic.",
+        "testStrategy": "Send requests to the API endpoints with different pagination, filtering, and sorting parameters and verify that the data is returned correctly.",
+        "priority": "low",
+        "dependencies": [
+          "3"
+        ],
+        "status": "done",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Implement Pagination with GORM",
+            "description": "Implement pagination using GORM's `Limit` and `Offset` methods. Add query parameters `page` and `limit` to control the pagination.",
+            "dependencies": [],
+            "details": "Implement the pagination logic in a reusable function. Calculate the offset based on the `page` and `limit` parameters. Return the total number of records for the endpoint.",
+            "status": "pending",
+            "testStrategy": "",
+            "parentId": "undefined"
+          },
+          {
+            "id": 2,
+            "title": "Implement Basic Filtering with GORM",
+            "description": "Implement basic filtering using GORM's `Where` method. Add query parameters for filtering based on specific fields (e.g., `name`, `email`).",
+            "dependencies": [],
+            "details": "Implement filtering for common fields like name and email. Use GORM's `Where` clause to filter the data based on the provided query parameters. Handle cases where the filter parameters are not provided.",
+            "status": "pending",
+            "testStrategy": "",
+            "parentId": "undefined"
+          },
+          {
+            "id": 3,
+            "title": "Implement Sorting with GORM",
+            "description": "Implement sorting using GORM's `Order` method. Add query parameters `sort` and `order` to control the sorting.",
+            "dependencies": [],
+            "details": "Implement sorting based on the `sort` parameter (e.g., `name`, `created_at`). Use the `order` parameter to specify the sorting direction (e.g., `asc`, `desc`). Validate the `sort` and `order` parameters to prevent invalid input.",
+            "status": "pending",
+            "testStrategy": "",
+            "parentId": "undefined"
+          },
+          {
+            "id": 4,
+            "title": "Combine Pagination, Filtering, and Sorting",
+            "description": "Combine the pagination, filtering, and sorting logic into a single function that can be used for all API endpoints.",
+            "dependencies": [
+              "9.1",
+              "9.2",
+              "9.3"
+            ],
+            "details": "Create a function that accepts the GORM DB object, the query parameters, and the model type. Apply the pagination, filtering, and sorting logic in the correct order. Return the paginated, filtered, and sorted data.",
+            "status": "pending",
+            "testStrategy": "",
+            "parentId": "undefined"
+          },
+          {
+            "id": 5,
+            "title": "Test Pagination, Filtering, and Sorting",
+            "description": "Test the pagination, filtering, and sorting logic with different query parameters to ensure that it works correctly.",
+            "dependencies": [
+              "9.4"
+            ],
+            "details": "Write unit tests and integration tests to verify the pagination, filtering, and sorting logic. Test with different combinations of query parameters. Verify that the data is returned correctly and that the total number of records is accurate.",
+            "status": "pending",
+            "testStrategy": "",
+            "parentId": "undefined"
+          }
+        ],
+        "updatedAt": "2025-09-30T04:48:18.771Z"
+      },
+      {
+        "id": "10",
+        "title": "Implement Rate Limiting",
+        "description": "Implement rate limiting to protect the API from abuse and prevent denial-of-service attacks.",
+        "details": "1. Install a rate limiting middleware such as `github.com/gin-contrib/ratelimit`. 2. Configure the rate limiting middleware to limit the number of requests per IP address or user. 3. Return a `429 Too Many Requests` error when the rate limit is exceeded.",
+        "testStrategy": "Send a large number of requests to the API endpoints and verify that the rate limiting middleware correctly limits the number of requests and returns a `429 Too Many Requests` error when the rate limit is exceeded.",
+        "priority": "medium",
+        "dependencies": [
+          "3"
+        ],
+        "status": "done",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Research Rate Limiting Strategies",
+            "description": "Investigate different rate limiting strategies such as fixed window, sliding window, and token bucket. Analyze their trade-offs in terms of performance and accuracy.",
+            "dependencies": [],
+            "details": "Explore the pros and cons of each strategy. Consider factors like implementation complexity, memory usage, and burst handling capabilities.",
+            "status": "pending",
+            "testStrategy": "",
+            "parentId": "undefined"
+          },
+          {
+            "id": 2,
+            "title": "Configure Rate Limiting Middleware",
+            "description": "Configure the chosen rate limiting middleware (e.g., `github.com/gin-contrib/ratelimit`) with the selected strategy and appropriate limits.",
+            "dependencies": [
+              "10.1"
+            ],
+            "details": "Set the rate limit based on the API's capacity and expected usage patterns. Configure the middleware to limit requests per IP address or user ID.",
+            "status": "pending",
+            "testStrategy": "",
+            "parentId": "undefined"
+          },
+          {
+            "id": 3,
+            "title": "Customize Error Response",
+            "description": "Customize the `429 Too Many Requests` error response to provide more informative details to the client.",
+            "dependencies": [
+              "10.2"
+            ],
+            "details": "Include details such as the remaining time until the rate limit is reset. Provide guidance on how to resolve the issue (e.g., wait and retry).",
+            "status": "pending",
+            "testStrategy": "",
+            "parentId": "undefined"
+          },
+          {
+            "id": 4,
+            "title": "Implement Dynamic Rate Limiting (Optional)",
+            "description": "Explore implementing dynamic rate limiting based on factors such as user tier or API endpoint criticality.",
+            "dependencies": [
+              "10.2"
+            ],
+            "details": "Implement logic to adjust the rate limits based on user roles or the specific API endpoint being accessed. This may require integration with user authentication and authorization systems.",
+            "status": "pending",
+            "testStrategy": "",
+            "parentId": "undefined"
+          },
+          {
+            "id": 5,
+            "title": "Test Rate Limiting Configuration",
+            "description": "Thoroughly test the rate limiting configuration to ensure it is working as expected and does not negatively impact legitimate users.",
+            "dependencies": [
+              "10.3"
+            ],
+            "details": "Simulate high traffic scenarios and verify that the rate limiting middleware correctly limits the number of requests and returns the customized error response. Monitor API performance to ensure that rate limiting does not introduce excessive overhead.",
+            "status": "pending",
+            "testStrategy": "",
+            "parentId": "undefined"
+          }
+        ],
+        "updatedAt": "2025-09-30T04:48:55.275Z"
+      },
+      {
+        "id": "11",
+        "title": "Implement Health Check Endpoint",
+        "description": "Implement a health check endpoint that returns the status of the API and its dependencies (e.g., database, Redis).",
+        "details": "1. Create a `/health` endpoint that returns a JSON response with the status of the API and its dependencies. 2. Check the database connection and Redis connection (if used). 3. Return a `200 OK` status if all dependencies are healthy, and a `500 Internal Server Error` status if any dependency is unhealthy.",
+        "testStrategy": "Access the `/health` endpoint and verify that it returns a `200 OK` status when all dependencies are healthy, and a `500 Internal Server Error` status when any dependency is unhealthy.",
+        "priority": "low",
+        "dependencies": [
+          "1"
+        ],
+        "status": "done",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Create /health endpoint and JSON response structure",
+            "description": "Define the /health endpoint and create the basic JSON structure for the response, including fields for API status and dependency statuses.",
+            "dependencies": [],
+            "details": "1. Create a new endpoint `/health` using the chosen framework (e.g., Gin). 2. Define a struct to represent the JSON response, including fields like `status` (overall API status) and `dependencies` (a map of dependency names to their statuses).",
+            "status": "pending",
+            "testStrategy": "",
+            "parentId": "undefined"
+          },
+          {
+            "id": 2,
+            "title": "Implement Database and Redis Connection Checks",
+            "description": "Implement functions to check the database and Redis connections, including error handling and status reporting.",
+            "dependencies": [
+              "11.1"
+            ],
+            "details": "1. Create a function `checkDatabaseConnection()` that attempts to connect to the database and executes a simple query. Handle potential errors (e.g., connection refused, invalid credentials) and return a boolean indicating the connection status. 2. Create a function `checkRedisConnection()` (if Redis is used) that attempts to ping the Redis server. Handle potential errors and return a boolean indicating the connection status. 3. Implement error logging for failed connection attempts.",
+            "status": "pending",
+            "testStrategy": "",
+            "parentId": "undefined"
+          },
+          {
+            "id": 3,
+            "title": "Assemble Health Check Response and Return Status Code",
+            "description": "Combine the results of the dependency checks and return the appropriate HTTP status code (200 or 500) with the JSON response.",
+            "dependencies": [
+              "11.2"
+            ],
+            "details": "1. In the `/health` endpoint handler, call `checkDatabaseConnection()` and `checkRedisConnection()` (if applicable). 2. Populate the `dependencies` map in the JSON response with the status of each dependency. 3. Set the overall API `status` to 'healthy' if all dependencies are healthy, and 'unhealthy' otherwise. 4. Return a `200 OK` status code if the overall status is 'healthy', and a `500 Internal Server Error` status code if the overall status is 'unhealthy'.",
+            "status": "pending",
+            "testStrategy": "",
+            "parentId": "undefined"
+          }
+        ],
+        "updatedAt": "2025-09-30T04:49:16.915Z"
+      },
+      {
+        "id": "12",
+        "title": "Containerize the Application with Docker",
+        "description": "Create a Dockerfile to containerize the application and make it easy to deploy.",
+        "details": "1. Create a Dockerfile that specifies the base image, dependencies, and build steps. 2. Use a multi-stage build to minimize the size of the final image. 3. Use environment variables to configure the application. 4. Create a `docker-compose.yml` file to define the application and its dependencies (e.g., database, Redis).",
+        "testStrategy": "Build the Docker image and run the application in a Docker container. Verify that the application starts without errors and can connect to the database and Redis (if used).",
+        "priority": "medium",
+        "dependencies": [
+          "11"
+        ],
+        "status": "done",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Create a Basic Dockerfile",
+            "description": "Define a basic Dockerfile that specifies the base image (e.g., `golang:latest` or a specific Go version), sets the working directory, copies the application source code, and installs necessary dependencies using `go mod download` and `go mod tidy`.",
+            "dependencies": [],
+            "details": "Choose an appropriate base image. Set the working directory inside the container. Copy `go.mod` and `go.sum` first, then run `go mod download`. Copy the rest of the source code. Consider using `WORKDIR` instruction.",
+            "status": "pending",
+            "testStrategy": "",
+            "parentId": "undefined"
+          },
+          {
+            "id": 2,
+            "title": "Implement Multi-Stage Build",
+            "description": "Refactor the Dockerfile to use a multi-stage build. The first stage will build the Go application, and the second stage will create a smaller image with only the necessary runtime components.",
+            "dependencies": [
+              "12.1"
+            ],
+            "details": "Use one stage for building the application binary. Use a separate, smaller base image (e.g., `alpine/git`) for the final image. Copy only the compiled binary from the build stage to the final stage. This reduces the final image size.",
+            "status": "pending",
+            "testStrategy": "",
+            "parentId": "undefined"
+          },
+          {
+            "id": 3,
+            "title": "Configure Environment Variables",
+            "description": "Define environment variables in the Dockerfile or `docker-compose.yml` to configure the application (e.g., database connection string, port number).",
+            "dependencies": [
+              "12.1"
+            ],
+            "details": "Use the `ENV` instruction in the Dockerfile to set default environment variables. Allow overriding these variables using environment variables passed at runtime. Ensure the application reads these environment variables using `os.Getenv`.",
+            "status": "pending",
+            "testStrategy": "",
+            "parentId": "undefined"
+          },
+          {
+            "id": 4,
+            "title": "Create docker-compose.yml",
+            "description": "Create a `docker-compose.yml` file to define the application service and any dependent services (e.g., database, Redis).",
+            "dependencies": [
+              "12.1"
+            ],
+            "details": "Define the application service, specifying the Dockerfile, ports, environment variables, and dependencies. Define separate services for the database and Redis (if used), specifying their images, ports, and volumes. Use `depends_on` to ensure the application starts after the database and Redis.",
+            "status": "pending",
+            "testStrategy": "",
+            "parentId": "undefined"
+          },
+          {
+            "id": 5,
+            "title": "Optimize Docker Image Size",
+            "description": "Further optimize the Docker image size by using `.dockerignore` file to exclude unnecessary files and directories from the image.",
+            "dependencies": [
+              "12.2"
+            ],
+            "details": "Create a `.dockerignore` file to exclude files like `.git`, `node_modules`, and other build artifacts. Use a minimal base image. Ensure that the final image only contains the necessary runtime dependencies.",
+            "status": "pending",
+            "testStrategy": "",
+            "parentId": "undefined"
+          }
+        ],
+        "updatedAt": "2025-09-30T04:49:40.325Z"
+      }
+    ],
+    "metadata": {
+      "version": "1.0.0",
+      "lastModified": "2025-09-30T04:49:40.326Z",
+      "taskCount": 12,
+      "completedCount": 12,
+      "tags": [
+        "master"
+      ]
+    }
+  }
+}
