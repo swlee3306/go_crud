@@ -33,6 +33,18 @@ Go 언어를 사용하여 API 방식을 통해 데이터베이스의 기본적�
 - **통합 테스트**: 데이터베이스 통합 테스트
 - **벤치마크 테스트**: 성능 측정 및 최적화
 
+### 🐳 컨테이너화 및 배포
+- **Docker 지원**: Dockerfile 및 docker-compose.yml 제공
+- **환경별 설정**: YAML 및 환경 변수 기반 설정
+- **헬스체크**: 시스템 상태 모니터링 및 진단
+- **API 문서화**: Swagger 기반 자동 문서 생성
+
+### 🔧 개발자 도구
+- **속도 제한**: Rate limiting 미들웨어
+- **페이지네이션**: 효율적인 데이터 페이징
+- **내부 시스템**: 데이터베이스 링커 및 시스템 환경 관리
+- **유틸리티**: 공통 기능 및 헬퍼 함수
+
 ## 📦 설치 및 실행
 
 ### 1. 저장소 클론
@@ -83,6 +95,8 @@ go build -o go_crud main_new.go
 go_crud/
 ├── main.go                 # 원본 메인 파일 (레거시)
 ├── main_new.go            # 새로운 메인 파일 (포트폴리오용)
+├── main_LoadEnv.go        # 환경 변수 로드
+├── main_LoadYml.go        # YAML 설정 로드
 ├── config/                # 설정 관리
 │   ├── database.go        # 데이터베이스 설정
 │   ├── drivers.go         # 데이터베이스 드라이버
@@ -101,12 +115,27 @@ go_crud/
 │   ├── jwt.go            # JWT 토큰 관리
 │   └── rbac.go           # 역할 기반 접근 제어
 ├── middleware/           # 미들웨어
-│   └── auth.go           # 인증 미들웨어
+│   ├── auth.go           # 인증 미들웨어
+│   └── ratelimit.go      # 속도 제한 미들웨어
 ├── validation/           # 데이터 검증
 │   ├── validator.go      # 검증기
 │   └── user_validation.go # 사용자 검증
 ├── logging/              # 로깅 시스템
 │   └── logger.go         # 로거 설정
+├── health/               # 헬스체크
+│   └── health.go         # 헬스체크 시스템
+├── docs/                 # API 문서
+│   └── swagger.go        # Swagger 문서
+├── internal/             # 내부 패키지
+│   ├── dblinker/         # 데이터베이스 링커
+│   ├── sysdef/           # 시스템 정의
+│   └── sysenv/           # 시스템 환경
+├── utils/                # 유틸리티
+│   ├── pagination.go     # 페이지네이션
+│   └── router/           # 라우터 유틸리티
+├── docker-compose.yml    # Docker Compose 설정
+├── Dockerfile            # Docker 이미지 설정
+├── setting.yml           # YAML 설정 파일
 ├── .env.example          # 환경 변수 예제
 ├── .env                  # 환경 변수
 ├── go.mod               # Go 모듈 파일
@@ -219,6 +248,54 @@ hashedPassword, err := auth.HashPassword(password)
 
 // 패스워드 검증
 isValid := auth.CheckPasswordHash(password, hashedPassword)
+```
+
+### 헬스체크 시스템
+```go
+// 헬스체크 엔드포인트
+GET /health
+
+// 응답 예시
+{
+  "status": "healthy",
+  "timestamp": "2023-01-01T00:00:00Z",
+  "version": "1.0.0",
+  "uptime": "2h30m15s",
+  "checks": {
+    "database": {
+      "status": "healthy",
+      "message": "Database connection is healthy"
+    },
+    "memory": {
+      "status": "healthy",
+      "message": "Memory usage is normal"
+    }
+  }
+}
+```
+
+### Docker 사용법
+```bash
+# Docker 이미지 빌드
+docker build -t go-crud .
+
+# Docker Compose로 실행
+docker-compose up -d
+
+# 로그 확인
+docker-compose logs -f
+
+# 서비스 중지
+docker-compose down
+```
+
+### Rate Limiting
+```go
+// Rate limiting 미들웨어 설정
+r.Use(middleware.RateLimitMiddleware(100, time.Minute))
+
+// IP별 요청 제한
+r.Use(middleware.IPRateLimitMiddleware(10, time.Minute))
 ```
 
 ## 🧪 테스트
